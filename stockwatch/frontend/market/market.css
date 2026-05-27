@@ -1,0 +1,186 @@
+body.market-page {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(56, 189, 248, 0.12), transparent),
+    linear-gradient(180deg, #0b1220 0%, #0f172a 40%, #0a1018 100%);
+}
+
+.market-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.market-hero h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.market-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(22, 199, 132, 0.12);
+  color: #16c784;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.live-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #16c784;
+  box-shadow: 0 0 8px #16c784;
+  animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.market-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.stat-pill {
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  backdrop-filter: blur(6px);
+}
+
+.stat-pill__label { color: #94a3b8; font-size: 0.78rem; }
+.stat-pill__value { margin-top: 0.25rem; font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.region { margin-bottom: 1.5rem; }
+
+.region__head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.region__flag {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(56, 189, 248, 0.15);
+  color: #7dd3fc;
+}
+
+.region__title { font-size: 1rem; font-weight: 600; color: #f1f5f9; }
+
+.quote-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.85rem;
+}
+
+.quote-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+
+.quote-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.quote-card--up { border-left: 3px solid #16c784; }
+.quote-card--down { border-left: 3px solid #ea3943; }
+.quote-card--flat { border-left: 3px solid #64748b; }
+
+.quote-card__code {
+  font-size: 0.72rem;
+  color: #64748b;
+  letter-spacing: 0.06em;
+}
+
+.quote-card__name {
+  margin: 0.35rem 0 0.65rem;
+  font-size: 0.92rem;
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.quote-card__price {
+  font-size: 1.65rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #f8fafc;
+}
+
+.quote-card__change {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.up { color: #16c784; }
+.down { color: #ea3943; }
+.flat { color: #94a3b8; }
+
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+.insight-card {
+  padding: 1.1rem;
+  border-radius: 14px;
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.insight-card__label { color: #94a3b8; font-size: 0.82rem; }
+.insight-card__value { margin: 0.5rem 0 0.75rem; font-size: 1.4rem; font-weight: 700; }
+.insight-card__list { margin: 0; padding-left: 1.1rem; color: #cbd5e1; font-size: 0.88rem; }
+.insight-card__list li { margin: 0.3rem 0; }
+
+.market-error {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: rgba(234, 57, 67, 0.12);
+  border: 1px solid rgba(234, 57, 67, 0.35);
+  color: #fecaca;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 600px) {
+  .market-stats { grid-template-columns: 1fr; }
+}

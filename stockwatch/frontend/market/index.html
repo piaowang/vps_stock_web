@@ -3,69 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StockWatch - 市场总览</title>
-  <style>
-    body { margin: 0; font-family: "Segoe UI", sans-serif; background: #0f172a; color: #e2e8f0; }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 1.25rem; }
-    .nav { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
-    .nav a { color: #93c5fd; text-decoration: none; }
-    .active { color: #22d3ee !important; font-weight: 700; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
-    .card { background: #1e293b; border-radius: 12px; padding: 1rem; border: 1px solid #334155; }
-    .k { color: #94a3b8; font-size: 0.82rem; }
-    .v { margin-top: 0.5rem; font-size: 1.5rem; font-weight: 700; }
-    .up { color: #16c784; } .down { color: #ea3943; } .flat { color: #94a3b8; }
-    .section { margin-top: 1rem; }
-    .region { margin-top: 1.2rem; }
-    .region__title { font-size: 1rem; color: #cbd5e1; margin: 0 0 0.8rem; letter-spacing: 0.04em; }
-    .list { margin: 0; padding-left: 1.2rem; color: #cbd5e1; }
-    .list li { margin: 0.35rem 0; }
-    .muted { color: #94a3b8; font-size: 0.88rem; }
-  </style>
+  <title>StockWatch · 全球市场总览</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/market/market.css">
 </head>
-<body>
-  <div class="wrap">
-    <nav class="nav">
-      <a href="/">首页</a>
-      <a href="/market" class="active">市场总览</a>
-      <a href="/stocks">股票列表</a>
-      <a href="/news">财经新闻</a>
-      <a href="/about">关于页面</a>
-    </nav>
-    <h1>市场总览</h1>
-    <p id="marketUpdated" class="muted">正在加载真实行情...</p>
-    <div id="regionMarkets"></div>
+<body class="market-page">
+  <header class="navbar">
+    <div class="navbar__brand">
+      <span class="navbar__logo">◆</span>
+      <h1>StockWatch</h1>
+    </div>
+    <div class="navbar__status">
+      <span id="marketLive" class="status-badge">全球市场</span>
+      <span id="marketUpdated" class="refresh-time">加载中…</span>
+    </div>
+  </header>
 
-    <div class="grid section">
-      <section class="card">
-        <div class="k">全球市场情绪</div>
-        <div id="sentimentValue" class="v flat">计算中</div>
-        <ul class="list">
-          <li id="sentimentLine1">汇总中/日/韩/美主要指数变化。</li>
+  <nav class="top-nav">
+    <a href="/">首页</a>
+    <a href="/market" class="active">市场总览</a>
+    <a href="/stocks">股票列表</a>
+    <a href="/news">财经新闻</a>
+    <a href="/about">关于页面</a>
+  </nav>
+
+  <main class="container">
+    <div class="market-hero">
+      <div>
+        <h1>全球市场总览</h1>
+        <p class="refresh-time">中 · 日 · 韩 · 美 主要指数实时快照</p>
+      </div>
+      <div class="market-hero__meta">
+        <span class="live-badge">LIVE</span>
+      </div>
+    </div>
+
+    <div class="market-stats">
+      <div class="stat-pill"><div class="stat-pill__label">上涨</div><div id="statUp" class="stat-pill__value up">--</div></div>
+      <div class="stat-pill"><div class="stat-pill__label">下跌</div><div id="statDown" class="stat-pill__value down">--</div></div>
+      <div class="stat-pill"><div class="stat-pill__label">平盘</div><div id="statFlat" class="stat-pill__value flat">--</div></div>
+    </div>
+
+    <div id="regionMarkets"></div>
+    <div id="marketError" class="market-error" hidden></div>
+
+    <div class="insight-grid">
+      <section class="insight-card">
+        <div class="insight-card__label">全球市场情绪</div>
+        <div id="sentimentValue" class="insight-card__value flat">计算中</div>
+        <ul class="insight-card__list">
+          <li id="sentimentLine1">汇总主要指数变化。</li>
           <li id="sentimentLine2">数据来自后端聚合接口。</li>
-          <li id="sentimentLine3">仅供展示和观察，不构成投资建议。</li>
+          <li id="sentimentLine3">仅供观察，不构成投资建议。</li>
         </ul>
       </section>
-      <section class="card">
-        <div class="k">区域涨跌</div>
-        <div id="breadthValue" class="v">--</div>
-        <ul class="list">
+      <section class="insight-card">
+        <div class="insight-card__label">区域涨跌</div>
+        <div id="breadthValue" class="insight-card__value">--</div>
+        <ul class="insight-card__list">
           <li id="breadthLine1">中国：上证与恒生。</li>
           <li id="breadthLine2">日本：日经 225。</li>
           <li id="breadthLine3">韩国：KOSPI 综合。</li>
         </ul>
       </section>
-      <section class="card">
-        <div class="k">美国风格参考</div>
-        <div id="activityValue" class="v">--</div>
-        <ul class="list">
+      <section class="insight-card">
+        <div class="insight-card__label">美国风格参考</div>
+        <div id="activityValue" class="insight-card__value">--</div>
+        <ul class="insight-card__list">
           <li id="activityLine1">SPY 观察宽基。</li>
           <li id="activityLine2">QQQ 观察科技。</li>
           <li id="activityLine3">DIA 观察蓝筹。</li>
         </ul>
       </section>
     </div>
-  </div>
+  </main>
+
   <script src="/market/market.js"></script>
 </body>
 </html>

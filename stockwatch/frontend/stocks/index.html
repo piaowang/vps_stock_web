@@ -13,7 +13,7 @@
     table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; }
     th, td { padding: 0.8rem; border-bottom: 1px solid #334155; text-align: left; }
     th { color: #94a3b8; font-weight: 600; font-size: 0.85rem; }
-    .up { color: #16c784; } .down { color: #ea3943; }
+    .up { color: #16c784; } .down { color: #ea3943; } .flat { color: #94a3b8; }
     .muted { color: #94a3b8; font-size: 0.9rem; margin-bottom: 0.8rem; }
     .chips { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.7rem 0 1rem; }
     .chip { background: #1e293b; border: 1px solid #334155; border-radius: 999px; padding: 0.3rem 0.7rem; font-size: 0.82rem; color: #cbd5e1; }
@@ -29,25 +29,17 @@
       <a href="/about">关于页面</a>
     </nav>
     <h1>股票列表</h1>
-    <p class="muted">示例自选股 + 盘中数据快照（静态）</p>
-    <div class="chips">
-      <span class="chip">美股核心资产</span>
-      <span class="chip">科技成长</span>
-      <span class="chip">高流动性 ETF</span>
-      <span class="chip">风险分层</span>
-    </div>
+    <p id="stockUpdated" class="muted">正在加载真实行情...</p>
+    <div id="stockChips" class="chips"></div>
     <table>
-      <thead><tr><th>代码</th><th>名称</th><th>价格</th><th>涨跌幅</th><th>成交额(估)</th><th>备注</th></tr></thead>
-      <tbody>
-        <tr><td>AAPL</td><td>Apple Inc.</td><td>228.50</td><td class="up">+0.31%</td><td>82.1B</td><td>消费电子龙头</td></tr>
-        <tr><td>TSLA</td><td>Tesla Inc.</td><td>248.20</td><td class="down">-0.52%</td><td>45.4B</td><td>高波动成长</td></tr>
-        <tr><td>NVDA</td><td>NVIDIA Corp.</td><td>135.80</td><td class="up">+1.12%</td><td>96.7B</td><td>AI 产业链核心</td></tr>
-        <tr><td>SPY</td><td>SPDR S&P 500 ETF</td><td>580.10</td><td class="up">+0.08%</td><td>38.9B</td><td>宽基指数 ETF</td></tr>
-        <tr><td>MSFT</td><td>Microsoft Corp.</td><td>442.10</td><td class="up">+0.27%</td><td>71.3B</td><td>云与企业软件</td></tr>
-        <tr><td>AMZN</td><td>Amazon.com Inc.</td><td>201.45</td><td class="up">+0.18%</td><td>34.8B</td><td>电商 + 云服务</td></tr>
-        <tr><td>META</td><td>Meta Platforms</td><td>523.82</td><td class="down">-0.14%</td><td>29.5B</td><td>广告与 AI 应用</td></tr>
+      <thead>
+        <tr><th>代码</th><th>名称</th><th>价格</th><th>涨跌幅</th><th>昨收</th><th>备注</th></tr>
+      </thead>
+      <tbody id="stockBody">
+        <tr><td colspan="6" class="muted">加载中...</td></tr>
       </tbody>
     </table>
   </div>
+  <script src="/stocks/stocks.js"></script>
 </body>
 </html>

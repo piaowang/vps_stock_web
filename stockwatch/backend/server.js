@@ -63,13 +63,17 @@ app.get('/api/quote', async (req, res, next) => {
   }
 });
 
-app.get('/api/quotes', async (req, res) => {
-  const { quotes, errors } = await quoteService.refreshAll(false);
-  res.json({
-    ok: errors.length === 0,
-    data: quotes,
-    errors,
-  });
+app.get('/api/quotes', async (req, res, next) => {
+  try {
+    const { quotes, errors } = await quoteService.refreshAll(false);
+    res.json({
+      ok: errors.length === 0,
+      data: quotes,
+      errors,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 app.use((err, req, res, next) => {
@@ -99,11 +103,21 @@ async function pollAndBroadcast() {
   });
 }
 
+function schedulePolling() {
+  setInterval(() => {
+    pollAndBroadcast().catch((err) => {
+      console.error('[aggregator] polling failed:', err.message || err);
+    });
+  }, POLL_MS);
+}
+
 server.listen(PORT, '0.0.0.0', async () => {
   console.log(`[aggregator] listening on http://0.0.0.0:${PORT}`);
   console.log(`[aggregator] REST GET /api/quote?symbol=AAPL`);
   console.log(`[aggregator] WS   ws://0.0.0.0:${PORT}/ws`);
 
-  await pollAndBroadcast();
-  setInterval(pollAndBroadcast, POLL_MS);
+  pollAndBroadcast().catch((err) => {
+    console.error('[aggregator] initial polling failed:', err.message || err);
+  });
+  schedulePolling();
 });

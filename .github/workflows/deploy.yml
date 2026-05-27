@@ -75,5 +75,18 @@ jobs:
             "${{ env.NGINX_BIN }}" -t
             "${{ env.NGINX_BIN }}" -s reload
 
-            curl -fsS http://127.0.0.1:8090/health >/dev/null
-            docker image prune -f
+            for i in $(seq 1 20); do
+              if curl -fsS http://127.0.0.1:8090/health >/dev/null; then
+                docker image prune -f
+                exit 0
+              fi
+              echo "Waiting for stockwatch-aggregator health check ($i/20)..."
+              docker ps --filter "name=stockwatch-aggregator"
+              docker logs --tail 40 stockwatch-aggregator || true
+              sleep 3
+            done
+
+            echo "stockwatch-aggregator did not become healthy"
+            docker ps --filter "name=stockwatch-aggregator"
+            docker logs --tail 120 stockwatch-aggregator || true
+            exit 1

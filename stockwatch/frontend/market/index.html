@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StockWatch - 市场总览</title>
+  <style>
+    body { margin: 0; font-family: "Segoe UI", sans-serif; background: #0f172a; color: #e2e8f0; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 1.25rem; }
+    .nav { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .nav a { color: #93c5fd; text-decoration: none; }
+    .active { color: #22d3ee !important; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .card { background: #1e293b; border-radius: 12px; padding: 1rem; border: 1px solid #334155; }
+    .k { color: #94a3b8; font-size: 0.82rem; }
+    .v { margin-top: 0.5rem; font-size: 1.5rem; font-weight: 700; }
+    .up { color: #16c784; } .down { color: #ea3943; }
+    .section { margin-top: 1rem; }
+    .list { margin: 0; padding-left: 1.2rem; color: #cbd5e1; }
+    .list li { margin: 0.35rem 0; }
+    .muted { color: #94a3b8; font-size: 0.88rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a href="/">首页</a>
+      <a href="/market" class="active">市场总览</a>
+      <a href="/stocks">股票列表</a>
+      <a href="/news">财经新闻</a>
+      <a href="/about">关于页面</a>
+    </nav>
+    <h1>市场总览</h1>
+    <p class="muted">美股盘中快照（静态演示数据） · 更新时间：2026-05-26 23:58 CST</p>
+    <div class="grid">
+      <section class="card"><div class="k">纳斯达克指数</div><div class="v">19,802.10</div><div class="up">+0.41%</div></section>
+      <section class="card"><div class="k">标普 500</div><div class="v">5,802.74</div><div class="down">-0.08%</div></section>
+      <section class="card"><div class="k">道琼斯</div><div class="v">39,533.20</div><div class="up">+0.15%</div></section>
+      <section class="card"><div class="k">VIX 波动率</div><div class="v">14.07</div><div class="down">-1.92%</div></section>
+    </div>
+
+    <div class="grid section">
+      <section class="card">
+        <div class="k">市场情绪</div>
+        <div class="v up">偏多</div>
+        <ul class="list">
+          <li>大型科技板块维持强势，AI 链条活跃。</li>
+          <li>10 年期美债收益率回落，估值压力缓和。</li>
+          <li>地缘风险仍在，能源价格波动加大。</li>
+        </ul>
+      </section>
+      <section class="card">
+        <div class="k">板块热度</div>
+        <div class="v">11 选 8 上涨</div>
+        <ul class="list">
+          <li>领涨：信息技术、工业、医疗健康</li>
+          <li>震荡：可选消费、通信服务</li>
+          <li>承压：能源、公用事业</li>
+        </ul>
+      </section>
+      <section class="card">
+        <div class="k">成交概况</div>
+        <div class="v">活跃</div>
+        <ul class="list">
+          <li>纳指成分股中约 64% 个股上涨。</li>
+          <li>ETF 交易量主要集中在 QQQ、SPY。</li>
+          <li>期权隐含波动率小幅回落。</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

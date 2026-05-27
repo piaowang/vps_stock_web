@@ -1,0 +1,71 @@
+# StockWatch 宿主机 Nginx 示例
+# Node 服务默认监听: 127.0.0.1:8090
+#
+# 对外:
+# - Web:  https://your-domain.com/
+# - REST: https://your-domain.com/api/quote?symbol=AAPL
+# - WS:   wss://your-domain.com/ws
+
+upstream stockwatch_aggregator {
+    server 127.0.0.1:8090;
+    keepalive 16;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name your-domain.com;
+
+    ssl_certificate     /root/cert/fullchain.cer;
+    ssl_certificate_key /root/cert/your-domain.key;
+
+    root /usr/local/nginx/html/stockwatch;
+    index index.html;
+
+    location = /index.html {
+        try_files $uri =404;
+    }
+
+    location /css/ {
+        try_files $uri =404;
+        expires 7d;
+    }
+
+    location /js/ {
+        try_files $uri =404;
+        expires 7d;
+    }
+
+    # 1) 反代 REST API
+    location /api/ {
+        proxy_pass http://stockwatch_aggregator;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # 2) 反代 WebSocket
+    location = /ws {
+        proxy_pass http://stockwatch_aggregator/ws;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_read_timeout 86400;
+    }
+
+    # 3) 健康检查
+    location = /health {
+        proxy_pass http://stockwatch_aggregator/health;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+    }
+
+    # 4) 前端页面路由
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}

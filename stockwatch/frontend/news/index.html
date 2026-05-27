@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StockWatch - 财经新闻</title>
+  <style>
+    body { margin: 0; font-family: "Segoe UI", sans-serif; background: #0f172a; color: #e2e8f0; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 1.25rem; }
+    .nav { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .nav a { color: #93c5fd; text-decoration: none; }
+    .active { color: #22d3ee !important; font-weight: 700; }
+    .item { background: #1e293b; border-radius: 12px; padding: 1rem; margin-bottom: 0.8rem; border: 1px solid #334155; }
+    .meta { color: #94a3b8; font-size: 0.82rem; margin-bottom: 0.35rem; }
+    .hint { color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a href="/">首页</a>
+      <a href="/market">市场总览</a>
+      <a href="/stocks">股票列表</a>
+      <a href="/news" class="active">财经新闻</a>
+      <a href="/about">关于页面</a>
+    </nav>
+    <h1>财经新闻</h1>
+    <p class="hint">以下为公开报道整理的静态摘要，便于展示页面结构。</p>
+    <article class="item">
+      <div class="meta">2026-05-26 · 美东时间 10:45 · 市场快讯</div>
+      <h3>纳指与标普盘中再创新高，科技股延续强势</h3>
+      <p>节后首个交易日风险偏好回升，半导体与软件板块带动纳指上行，市场继续交易 AI 相关主线。</p>
+    </article>
+    <article class="item">
+      <div class="meta">2026-05-26 · 宏观观察</div>
+      <h3>美债收益率小幅回落，成长板块估值压力缓和</h3>
+      <p>10 年期收益率回撤对高估值板块形成支撑，资金在龙头科技与防御行业之间轮动。</p>
+    </article>
+    <article class="item">
+      <div class="meta">2026-05-26 · 风险提示</div>
+      <h3>油价与地缘因素仍扰动短线波动率</h3>
+      <p>能源价格的不确定性依然存在，VIX 仍高于低波动区间，仓位管理和止损纪律依旧重要。</p>
+    </article>
+    <article class="item">
+      <div class="meta">2026-05-26 · 事件前瞻</div>
+      <h3>PCE 与联储表态将影响下一阶段风险偏好</h3>
+      <p>通胀数据与政策预期是短线焦点，若数据温和，科技成长与小盘股可能获得进一步修复空间。</p>
+    </article>
+  </div>
+</body>
+</html>

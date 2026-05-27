@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StockWatch - 关于</title>
+  <style>
+    body { margin: 0; font-family: "Segoe UI", sans-serif; background: #0f172a; color: #e2e8f0; }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 1.25rem; }
+    .nav { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .nav a { color: #93c5fd; text-decoration: none; }
+    .active { color: #22d3ee !important; font-weight: 700; }
+    .panel { background: #1e293b; border-radius: 12px; padding: 1rem; border: 1px solid #334155; }
+    .muted { color: #94a3b8; }
+    .list { margin: 0.6rem 0 0; padding-left: 1.2rem; }
+    .list li { margin: 0.35rem 0; color: #cbd5e1; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a href="/">首页</a>
+      <a href="/market">市场总览</a>
+      <a href="/stocks">股票列表</a>
+      <a href="/news">财经新闻</a>
+      <a href="/about" class="active">关于页面</a>
+    </nav>
+    <h1>关于 StockWatch</h1>
+    <section class="panel">
+      <p>StockWatch 是一个可直接部署到 Nginx 的纯前端金融信息站点样板。</p>
+      <p class="muted">当前版本包含 5 个路径，目标是“开箱可见 + 易扩展”。</p>
+      <ul class="list">
+        <li>首页：指数与个股卡片，支持图表弹窗与资讯入口。</li>
+        <li>市场总览：市场情绪、板块热度、成交概况。</li>
+        <li>股票列表：核心标的清单，便于后续接实时 API。</li>
+        <li>财经新闻：静态新闻摘要，可换成真实源。</li>
+        <li>关于页面：项目定位、部署说明、扩展方向。</li>
+      </ul>
+    </section>
+
+    <section class="panel" style="margin-top: 1rem;">
+      <h3 style="margin-top: 0;">下一步可扩展</h3>
+      <ul class="list">
+        <li>接入你自己的后端 API 以避免浏览器 CORS 限制。</li>
+        <li>增加搜索、自选股、排序筛选和多语言支持。</li>
+        <li>补充免责声明、数据来源和更新时间标记。</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

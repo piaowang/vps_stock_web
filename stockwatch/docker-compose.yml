@@ -1,0 +1,11 @@
+services:
+  aggregator:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: stockwatch-aggregator
+    restart: unless-stopped
+    environment:
+      - AGG_PORT=8090
+    ports:
+      - "8090:8090"

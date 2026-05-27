@@ -42,8 +42,8 @@ jobs:
           port: ${{ env.SSH_PORT }}
           script: |
             set -e
-            mkdir -p /opt "${{ env.NGINX_STATIC_DIR }}"
             rm -rf "${{ env.REMOTE_APP_DIR }}"
+            mkdir -p "${{ env.REMOTE_APP_DIR }}" "${{ env.NGINX_STATIC_DIR }}"
             rm -rf "${{ env.NGINX_STATIC_DIR }}"/*
 
       - name: Upload StockWatch Project
@@ -53,8 +53,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ env.SSH_PORT }}
-          source: "stockwatch"
-          target: "/opt"
+          source: "stockwatch/*"
+          target: ${{ env.REMOTE_APP_DIR }}
+          strip_components: 1
 
       - name: Restart Backend and Reload Nginx
         uses: appleboy/ssh-action@master

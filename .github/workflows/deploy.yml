@@ -1,0 +1,89 @@
+name: Deploy StockWatch to VPS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "stockwatch/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: stockwatch-deploy
+  cancel-in-progress: true
+
+env:
+  REMOTE_APP_DIR: ${{ vars.REMOTE_APP_DIR || '/opt/stockwatch' }}
+  NGINX_STATIC_DIR: ${{ vars.NGINX_STATIC_DIR || '/usr/local/nginx/html/stockwatch' }}
+  NGINX_BIN: ${{ vars.NGINX_BIN || '/usr/local/nginx/sbin/nginx' }}
+  SSH_PORT: ${{ secrets.PORT || '22' }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Validate Backend Syntax
+        working-directory: stockwatch/backend
+        run: |
+          npm ci
+          npm run check
+
+      - name: Prepare Remote Directories
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ env.SSH_PORT }}
+          script: |
+            set -e
+            mkdir -p "${{ env.REMOTE_APP_DIR }}" "${{ env.NGINX_STATIC_DIR }}"
+            rm -rf "${{ env.REMOTE_APP_DIR }}/backend"
+            rm -rf "${{ env.REMOTE_APP_DIR }}/deploy"
+            rm -f "${{ env.REMOTE_APP_DIR }}/docker-compose.yml"
+            rm -rf "${{ env.NGINX_STATIC_DIR }}"/*
+
+      - name: Deploy Frontend to Nginx
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ env.SSH_PORT }}
+          source: "stockwatch/frontend/*"
+          target: ${{ env.NGINX_STATIC_DIR }}
+          strip_components: 2
+
+      - name: Copy Backend and Compose Files
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ env.SSH_PORT }}
+          source: "stockwatch/backend/*,stockwatch/deploy/*,stockwatch/docker-compose.yml"
+          target: ${{ env.REMOTE_APP_DIR }}
+          strip_components: 1
+
+      - name: Restart Backend and Reload Nginx
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ env.SSH_PORT }}
+          script: |
+            set -e
+            cd "${{ env.REMOTE_APP_DIR }}"
+            docker compose up -d --build aggregator
+
+            "${{ env.NGINX_BIN }}" -t
+            "${{ env.NGINX_BIN }}" -s reload
+
+            curl -fsS http://127.0.0.1:8090/health >/dev/null
+            docker image prune -f

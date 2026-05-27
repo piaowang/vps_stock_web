@@ -1,4 +1,15 @@
-const SUPPORTED_SYMBOLS = ['AAPL', 'TSLA', 'NVDA', 'SPY', '^IXIC', '^GSPC'];
+const SUPPORTED_SYMBOLS = [
+  'AAPL',
+  'TSLA',
+  'NVDA',
+  'SPY',
+  'QQQ',
+  'DIA',
+  '^IXIC',
+  '^GSPC',
+  '^DJI',
+  '^VIX',
+];
 
 function normalizeSymbol(raw) {
   return String(raw || '')
@@ -13,7 +24,7 @@ function assertSymbol(raw) {
     err.statusCode = 400;
     err.details = {
       supported: SUPPORTED_SYMBOLS,
-      message: 'Supported symbols: AAPL, TSLA, NVDA, SPY, ^IXIC, ^GSPC.',
+      message: `Supported symbols: ${SUPPORTED_SYMBOLS.join(', ')}.`,
     };
     throw err;
   }

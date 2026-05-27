@@ -19,31 +19,29 @@
 <body>
   <div class="wrap">
     <nav class="nav">
-      <a href="/">首页</a>
-      <a href="/market">市场总览</a>
+      <a href="/">总览</a>
       <a href="/stocks">股票列表</a>
       <a href="/news">财经新闻</a>
-      <a href="/about" class="active">关于页面</a>
+      <a href="/about" class="active">关于</a>
     </nav>
     <h1>关于 StockWatch</h1>
     <section class="panel">
-      <p>StockWatch 是一个可直接部署到 Nginx 的纯前端金融信息站点样板。</p>
-      <p class="muted">当前版本包含 5 个路径，目标是“开箱可见 + 易扩展”。</p>
+      <p>StockWatch 是一个可直接部署到 Nginx 的金融行情站点。</p>
+      <p class="muted">首页展示全球主要市场总览，其他页面提供股票列表与资讯入口。</p>
       <ul class="list">
-        <li>首页：指数与个股卡片，支持图表弹窗与资讯入口。</li>
-        <li>市场总览：市场情绪、板块热度、成交概况。</li>
-        <li>股票列表：核心标的清单，便于后续接实时 API。</li>
+        <li>总览：中/日/韩/美主要指数实时快照。</li>
+        <li>股票列表：核心标的清单，接入后端实时 API。</li>
         <li>财经新闻：静态新闻摘要，可换成真实源。</li>
-        <li>关于页面：项目定位、部署说明、扩展方向。</li>
+        <li>关于：项目定位、部署说明、扩展方向。</li>
       </ul>
     </section>
 
     <section class="panel" style="margin-top: 1rem;">
-      <h3 style="margin-top: 0;">下一步可扩展</h3>
+      <h3 style="margin-top: 0;">技术栈</h3>
       <ul class="list">
-        <li>接入你自己的后端 API 以避免浏览器 CORS 限制。</li>
-        <li>增加搜索、自选股、排序筛选和多语言支持。</li>
-        <li>补充免责声明、数据来源和更新时间标记。</li>
+        <li>前端：静态 HTML / CSS / JS，由宿主机 Nginx 托管。</li>
+        <li>后端：Node.js 聚合服务，Docker 部署，提供 REST 与 WebSocket。</li>
+        <li>部署：GitHub Actions 自动同步到 VPS。</li>
       </ul>
     </section>
   </div>

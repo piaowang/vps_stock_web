@@ -4,10 +4,11 @@
 
 ## 目录
 
-- `index.html`: 首页
+- `index.html`: 全球市场总览（首页）
 - `css/`: 样式
-- `js/`: 首页交互与图表库
-- `market/`, `stocks/`, `news/`, `about/`: 多页面入口
+- `js/`: 市场总览脚本
+- `stocks/`, `news/`, `about/`: 其他页面
+- `market/`: 已合并至首页，保留跳转
 
 ## 发布
 

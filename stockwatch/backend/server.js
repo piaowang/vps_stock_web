@@ -2,17 +2,25 @@ const express = require('express');
 const http = require('http');
 const { QuoteCache } = require('./src/quote-cache');
 const { QuoteService } = require('./src/quote-service');
-const { fetchQuoteFromYahoo } = require('./src/yahoo-provider');
+const { HistoryService } = require('./src/history-service');
+const { fetchQuoteFromYahoo, fetchHistoryFromYahoo } = require('./src/yahoo-provider');
 const { createWsHub } = require('./src/ws-hub');
 const { SUPPORTED_SYMBOLS, assertSymbol } = require('./src/symbols');
+const { assertHistorySymbol, getMarket, MARKETS } = require('./src/markets');
 
 const PORT = Number(process.env.AGG_PORT || 8090);
 const POLL_MS = 5000;
+const HISTORY_TTL_MS = Number(process.env.HISTORY_TTL_MS || 3600000);
 
 const cache = new QuoteCache(POLL_MS);
+const historyCache = new QuoteCache(HISTORY_TTL_MS);
 const quoteService = new QuoteService({
   cache,
   provider: { fetchQuoteFromYahoo },
+});
+const historyService = new HistoryService({
+  cache: historyCache,
+  provider: { fetchHistoryFromYahoo },
 });
 
 const app = express();
@@ -71,6 +79,40 @@ app.get('/api/quotes', async (req, res, next) => {
       data: quotes,
       errors,
     });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/history', async (req, res, next) => {
+  try {
+    const symbol = assertHistorySymbol(req.query.symbol);
+    const range = String(req.query.range || '5y');
+    const history = await historyService.getHistory(symbol, range);
+    res.json({ ok: true, data: history });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/markets', (req, res) => {
+  res.json({
+    ok: true,
+    data: Object.values(MARKETS).map(({ id, title, flag, primarySymbol }) => ({
+      id,
+      title,
+      flag,
+      primarySymbol,
+    })),
+  });
+});
+
+app.get('/api/market/:id', async (req, res, next) => {
+  try {
+    getMarket(req.params.id);
+    const range = String(req.query.range || '5y');
+    const data = await historyService.getMarketDetail(req.params.id, range);
+    res.json({ ok: true, data });
   } catch (err) {
     next(err);
   }

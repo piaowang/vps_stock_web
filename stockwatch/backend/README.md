@@ -14,6 +14,9 @@ npm start
 - `GET /health`
 - `GET /api/quote?symbol=AAPL`
 - `GET /api/quotes`
+- `GET /api/history?symbol=^GSPC&range=5y`
+- `GET /api/markets`
+- `GET /api/market/us?range=5y`
 - `WS /ws`
 
 ## Docker

@@ -1,14 +1,14 @@
 const REGIONS = [
-  { title: '美国', flag: 'US', items: [
+  { id: 'us', title: '美国', flag: 'US', items: [
     { symbol: '^GSPC', label: '标普 500' }, { symbol: '^IXIC', label: '纳斯达克' },
     { symbol: '^DJI', label: '道琼斯' }, { symbol: '^VIX', label: 'VIX 波动率' },
   ]},
-  { title: '中国', flag: 'CN', items: [
+  { id: 'cn', title: '中国', flag: 'CN', items: [
     { symbol: '000001.SS', label: '上证指数', fallback: '^SSEC' },
     { symbol: '^HSI', label: '恒生指数' },
   ]},
-  { title: '日本', flag: 'JP', items: [{ symbol: '^N225', label: '日经 225' }] },
-  { title: '韩国', flag: 'KR', items: [{ symbol: '^KS11', label: 'KOSPI 综合' }] },
+  { id: 'jp', title: '日本', flag: 'JP', items: [{ symbol: '^N225', label: '日经 225' }] },
+  { id: 'kr', title: '韩国', flag: 'KR', items: [{ symbol: '^KS11', label: 'KOSPI 综合' }] },
 ];
 
 const EXTRA = ['SPY', 'QQQ', 'DIA', 'NVDA'];
@@ -38,14 +38,15 @@ async function loadItemQuote(item) {
   }
 }
 
-function card(item, q) {
+function card(item, q, regionId) {
   const cls = q ? tone(q.changePct) : 'flat';
-  return `<article class="quote-card quote-card--${cls}">
+  const href = `/market/detail.html?id=${regionId}`;
+  return `<a href="${href}" class="quote-card quote-card--link quote-card--${cls}">
     <div class="quote-card__code">${item.symbol.replace('^', '')}</div>
     <h3 class="quote-card__name">${item.label}</h3>
     <div class="quote-card__price">${q ? fmt(q.price) : '--'}</div>
     <div class="quote-card__change ${cls}">${q ? pct(q.changePct) : '--'}</div>
-  </article>`;
+  </a>`;
 }
 
 function renderRegions(map) {
@@ -53,8 +54,14 @@ function renderRegions(map) {
   if (!root) throw new Error('页面结构缺失 regionMarkets');
   root.innerHTML = REGIONS.map((region) => `
     <section class="region">
-      <div class="region__head"><span class="region__flag">${region.flag}</span><h2 class="region__title">${region.title}</h2></div>
-      <div class="quote-grid">${region.items.map((item) => card(item, map[item.symbol])).join('')}</div>
+      <div class="region__head">
+        <a href="/market/detail.html?id=${region.id}" class="region__link">
+          <span class="region__flag">${region.flag}</span>
+          <h2 class="region__title">${region.title}</h2>
+          <span class="region__enter">5 年回顾 →</span>
+        </a>
+      </div>
+      <div class="quote-grid">${region.items.map((item) => card(item, map[item.symbol], region.id)).join('')}</div>
     </section>`).join('');
 }
 

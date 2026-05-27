@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StockWatch · 市场详情</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/market.css">
+  <link rel="stylesheet" href="/css/market-detail.css">
+</head>
+<body class="market-page">
+  <header class="navbar">
+    <div class="navbar__brand">
+      <span class="navbar__logo">◆</span>
+      <h1>StockWatch</h1>
+    </div>
+    <div class="navbar__status">
+      <span id="detailLive" class="status-badge">5 年回顾</span>
+      <span id="detailUpdated" class="refresh-time">加载中…</span>
+    </div>
+  </header>
+
+  <nav class="top-nav">
+    <a href="/">总览</a>
+    <a href="/stocks">股票列表</a>
+    <a href="/news">财经新闻</a>
+    <a href="/about">关于</a>
+  </nav>
+
+  <main class="container">
+    <div class="detail-back">
+      <a href="/">← 返回总览</a>
+    </div>
+
+    <div class="market-hero">
+      <div>
+        <div class="detail-flag" id="detailFlag">--</div>
+        <h1 id="detailTitle">市场详情</h1>
+        <p class="refresh-time">近 5 年指数走势与代表性个股累计涨幅排行</p>
+      </div>
+      <div class="market-hero__meta">
+        <span class="range-badge">5Y</span>
+      </div>
+    </div>
+
+    <section class="chart-panel">
+      <div class="chart-panel__head">
+        <h2 id="chartTitle">主指数走势</h2>
+        <div id="chartReturn" class="chart-panel__return flat">--</div>
+      </div>
+      <canvas id="indexChart" width="960" height="320" aria-label="5年指数走势"></canvas>
+      <div id="chartMeta" class="chart-panel__meta">--</div>
+    </section>
+
+    <section class="detail-section">
+      <h2 class="detail-section__title">主要指数 · 5 年累计</h2>
+      <div id="indexGrid" class="return-grid"></div>
+    </section>
+
+    <section class="detail-section">
+      <h2 class="detail-section__title">代表性个股 · 5 年涨幅榜</h2>
+      <p class="detail-note">基于预设龙头/权重股样本，按近 5 年累计涨幅排序，不代表全市场排名。</p>
+      <div class="rank-table-wrap">
+        <table class="rank-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>代码</th>
+              <th>名称</th>
+              <th>5 年前</th>
+              <th>现价</th>
+              <th>5 年涨幅</th>
+            </tr>
+          </thead>
+          <tbody id="stockRankBody">
+            <tr><td colspan="6" class="muted">加载中…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div id="detailError" class="market-error" hidden></div>
+  </main>
+
+  <script src="/js/market-detail.js"></script>
+</body>
+</html>

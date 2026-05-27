@@ -69,6 +69,10 @@ body.market-page {
   border-bottom: 1px solid rgba(148, 163, 184, 0.15);
 }
 
+.region__head .region__link {
+  width: 100%;
+}
+
 .region__flag {
   width: 28px;
   height: 28px;

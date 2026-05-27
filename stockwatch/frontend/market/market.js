@@ -11,7 +11,7 @@ const REGIONS = [
   {
     title: '中国',
     items: [
-      { symbol: '^SSEC', label: '上证指数' },
+      { symbol: '000001.SS', label: '上证指数' },
       { symbol: '^HSI', label: '恒生指数' },
     ],
   },

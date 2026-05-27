@@ -12,7 +12,7 @@ const SUPPORTED_SYMBOLS = [
   '^GSPC',
   '^DJI',
   '^VIX',
-  '^SSEC',
+  '000001.SS',
   '^HSI',
   '^N225',
   '^KS11',

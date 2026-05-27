@@ -14,9 +14,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  REMOTE_APP_DIR: ${{ vars.REMOTE_APP_DIR || '/opt/stockwatch' }}
-  NGINX_STATIC_DIR: ${{ vars.NGINX_STATIC_DIR || '/usr/local/nginx/html/stockwatch' }}
-  NGINX_BIN: ${{ vars.NGINX_BIN || '/usr/local/nginx/sbin/nginx' }}
+  REMOTE_APP_DIR: /opt/stockwatch
+  NGINX_STATIC_DIR: /usr/local/nginx/html/stockwatch
+  NGINX_BIN: /usr/local/nginx/sbin/nginx
   SSH_PORT: ${{ secrets.PORT || '22' }}
 
 jobs:

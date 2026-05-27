@@ -4,14 +4,14 @@ const REGIONS = [
     { symbol: '^DJI', label: '道琼斯' }, { symbol: '^VIX', label: 'VIX 波动率' },
   ]},
   { title: '中国', flag: 'CN', items: [
-    { symbol: '000001.SS', label: '上证指数' }, { symbol: '^HSI', label: '恒生指数' },
+    { symbol: '000001.SS', label: '上证指数', fallback: '^SSEC' },
+    { symbol: '^HSI', label: '恒生指数' },
   ]},
   { title: '日本', flag: 'JP', items: [{ symbol: '^N225', label: '日经 225' }] },
   { title: '韩国', flag: 'KR', items: [{ symbol: '^KS11', label: 'KOSPI 综合' }] },
 ];
 
 const EXTRA = ['SPY', 'QQQ', 'DIA', 'NVDA'];
-const ALL = [...new Set([...REGIONS.flatMap((r) => r.items.map((i) => i.symbol)), ...EXTRA])];
 const REFRESH_MS = 30000;
 
 const $ = (id) => document.getElementById(id);
@@ -20,12 +20,22 @@ const fmt = (n) => Number(n || 0).toLocaleString('en-US', { minimumFractionDigit
 const pct = (n) => `${n >= 0 ? '+' : ''}${Number(n || 0).toFixed(2)}%`;
 const tone = (n) => (n > 0.001 ? 'up' : n < -0.001 ? 'down' : 'flat');
 
-async function quote(symbol) {
+async function fetchQuote(symbol) {
   const res = await fetch(`/api/quote?symbol=${encodeURIComponent(symbol)}`);
   if (!res.ok) throw new Error(`${symbol} HTTP ${res.status}`);
   const json = await res.json();
   if (!json?.ok || !json?.data) throw new Error(`${symbol} empty`);
   return json.data;
+}
+
+async function loadItemQuote(item) {
+  try {
+    return await fetchQuote(item.symbol);
+  } catch (err) {
+    if (!item.fallback) throw err;
+    const data = await fetchQuote(item.fallback);
+    return { ...data, symbol: item.symbol };
+  }
 }
 
 function card(item, q) {
@@ -51,10 +61,9 @@ function renderRegions(map) {
 function renderStats(quotes) {
   const up = quotes.filter((q) => q.changePct > 0.001).length;
   const down = quotes.filter((q) => q.changePct < -0.001).length;
-  const flat = quotes.length - up - down;
   setText('statUp', String(up));
   setText('statDown', String(down));
-  setText('statFlat', String(flat));
+  setText('statFlat', String(quotes.length - up - down));
 }
 
 function renderSummary(map, quotes) {
@@ -66,9 +75,11 @@ function renderSummary(map, quotes) {
   const vix = map['^VIX'];
   const riskOn = rising >= Math.ceil(quotes.length * 0.55) && (!vix || vix.changePct <= 0);
   const mood = riskOn ? '全球偏多' : rising >= Math.ceil(quotes.length * 0.4) ? '区域分化' : '整体偏谨慎';
-
   const moodEl = $('sentimentValue');
-  if (moodEl) { moodEl.textContent = mood; moodEl.className = `insight-card__value ${riskOn ? 'up' : rising >= Math.ceil(quotes.length * 0.4) ? 'flat' : 'down'}`; }
+  if (moodEl) {
+    moodEl.textContent = mood;
+    moodEl.className = `insight-card__value ${riskOn ? 'up' : rising >= Math.ceil(quotes.length * 0.4) ? 'flat' : 'down'}`;
+  }
   setText('sentimentLine1', `中/日/韩/美指数 ${rising}/${quotes.length} 上涨。`);
   setText('sentimentLine2', vix ? `VIX ${fmt(vix.price)} (${pct(vix.changePct)})` : 'VIX 暂无数据');
   setText('breadthValue', stats.join(' · '));
@@ -82,15 +93,18 @@ function showError(msg) {
 }
 
 async function loadMarket() {
-  const settled = await Promise.allSettled(ALL.map(quote));
-  const quotes = settled.filter((r) => r.status === 'fulfilled').map((r) => r.value);
-  const indices = quotes.filter((q) => REGIONS.some((r) => r.items.some((i) => i.symbol === q.symbol)));
-  if (!indices.length) throw new Error('没有拿到市场行情');
+  const items = REGIONS.flatMap((r) => r.items);
+  const itemSettled = await Promise.allSettled(items.map(loadItemQuote));
+  const extraSettled = await Promise.allSettled(EXTRA.map(fetchQuote));
+  const itemQuotes = itemSettled.filter((r) => r.status === 'fulfilled').map((r) => r.value);
+  const extraQuotes = extraSettled.filter((r) => r.status === 'fulfilled').map((r) => r.value);
+  if (!itemQuotes.length) throw new Error('没有拿到市场行情');
 
+  const quotes = [...itemQuotes, ...extraQuotes];
   const map = Object.fromEntries(quotes.map((q) => [q.symbol, q]));
   renderRegions(map);
-  renderStats(indices);
-  renderSummary(map, indices);
+  renderStats(itemQuotes);
+  renderSummary(map, itemQuotes);
   const err = $('marketError');
   if (err) err.hidden = true;
   setText('marketUpdated', `更新 ${new Date().toLocaleTimeString('zh-CN', { hour12: false })}`);

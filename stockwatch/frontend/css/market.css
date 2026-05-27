@@ -13,18 +13,7 @@ body.market-page {
   margin-bottom: 1.25rem;
 }
 
-.market-hero h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.market-hero__meta {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
+.market-hero h1 { font-size: 1.75rem; font-weight: 700; }
 
 .live-badge {
   display: inline-flex;
@@ -44,7 +33,6 @@ body.market-page {
   height: 7px;
   border-radius: 50%;
   background: #16c784;
-  box-shadow: 0 0 8px #16c784;
   animation: pulse 1.6s infinite;
 }
 
@@ -65,7 +53,6 @@ body.market-page {
   border: 1px solid rgba(148, 163, 184, 0.12);
   border-radius: 10px;
   padding: 0.75rem 1rem;
-  backdrop-filter: blur(6px);
 }
 
 .stat-pill__label { color: #94a3b8; font-size: 0.78rem; }
@@ -103,50 +90,20 @@ body.market-page {
 }
 
 .quote-card {
-  position: relative;
-  overflow: hidden;
   padding: 1rem 1.1rem;
   border-radius: 14px;
   background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
   border: 1px solid rgba(148, 163, 184, 0.12);
-  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
-}
-
-.quote-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
 .quote-card--up { border-left: 3px solid #16c784; }
 .quote-card--down { border-left: 3px solid #ea3943; }
 .quote-card--flat { border-left: 3px solid #64748b; }
 
-.quote-card__code {
-  font-size: 0.72rem;
-  color: #64748b;
-  letter-spacing: 0.06em;
-}
-
-.quote-card__name {
-  margin: 0.35rem 0 0.65rem;
-  font-size: 0.92rem;
-  color: #cbd5e1;
-  font-weight: 500;
-}
-
-.quote-card__price {
-  font-size: 1.65rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: #f8fafc;
-}
-
-.quote-card__change {
-  margin-top: 0.35rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
+.quote-card__code { font-size: 0.72rem; color: #64748b; }
+.quote-card__name { margin: 0.35rem 0 0.65rem; font-size: 0.92rem; color: #cbd5e1; }
+.quote-card__price { font-size: 1.65rem; font-weight: 700; font-variant-numeric: tabular-nums; color: #f8fafc; }
+.quote-card__change { margin-top: 0.35rem; font-size: 0.95rem; font-weight: 600; font-variant-numeric: tabular-nums; }
 
 .up { color: #16c784; }
 .down { color: #ea3943; }
@@ -169,7 +126,6 @@ body.market-page {
 .insight-card__label { color: #94a3b8; font-size: 0.82rem; }
 .insight-card__value { margin: 0.5rem 0 0.75rem; font-size: 1.4rem; font-weight: 700; }
 .insight-card__list { margin: 0; padding-left: 1.1rem; color: #cbd5e1; font-size: 0.88rem; }
-.insight-card__list li { margin: 0.3rem 0; }
 
 .market-error {
   margin-top: 0.75rem;
@@ -178,7 +134,6 @@ body.market-page {
   background: rgba(234, 57, 67, 0.12);
   border: 1px solid rgba(234, 57, 67, 0.35);
   color: #fecaca;
-  font-size: 0.88rem;
 }
 
 @media (max-width: 600px) {

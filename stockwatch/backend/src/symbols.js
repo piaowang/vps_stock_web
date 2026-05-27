@@ -12,6 +12,10 @@ const SUPPORTED_SYMBOLS = [
   '^GSPC',
   '^DJI',
   '^VIX',
+  '^SSEC',
+  '^HSI',
+  '^N225',
+  '^KS11',
 ];
 
 function normalizeSymbol(raw) {

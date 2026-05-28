@@ -56,11 +56,8 @@ function renderRegions(map) {
   root.innerHTML = REGIONS.map((region) => `
     <section class="region">
       <div class="region__head">
-        <a href="/market/detail.html?id=${region.id}" class="region__link">
-          <span class="region__flag">${region.flag}</span>
-          <h2 class="region__title">${region.title}</h2>
-          <span class="region__enter">5 年回顾 →</span>
-        </a>
+        <span class="region__flag">${region.flag}</span>
+        <h2 class="region__title">${region.title}</h2>
       </div>
       <div class="quote-grid">${region.items.map((item) => card(item, map[item.symbol], region.id)).join('')}</div>
     </section>`).join('');

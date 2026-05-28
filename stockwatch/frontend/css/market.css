@@ -69,10 +69,6 @@ body.market-page {
   border-bottom: 1px solid rgba(148, 163, 184, 0.15);
 }
 
-.region__head .region__link {
-  width: 100%;
-}
-
 .region__flag {
   width: 28px;
   height: 28px;
@@ -138,28 +134,6 @@ body.market-page {
   background: rgba(234, 57, 67, 0.12);
   border: 1px solid rgba(234, 57, 67, 0.35);
   color: #fecaca;
-}
-
-.region__link {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  text-decoration: none;
-  color: inherit;
-}
-
-.region__link:hover .region__title {
-  color: #e2e8f0;
-}
-
-.region__enter {
-  margin-left: auto;
-  color: #64748b;
-  font-size: 0.78rem;
-}
-
-.region__head:hover .region__enter {
-  color: #94a3b8;
 }
 
 .quote-card--link,

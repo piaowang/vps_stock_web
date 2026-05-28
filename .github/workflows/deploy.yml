@@ -71,9 +71,11 @@ jobs:
             docker compose up -d --build aggregator
 
             cp -r frontend/* "${{ env.NGINX_STATIC_DIR }}"/
+            rm -f "${{ env.NGINX_STATIC_DIR }}/js/home.js" "${{ env.NGINX_STATIC_DIR }}/js/market.js"
 
-            test -f "${{ env.NGINX_STATIC_DIR }}/js/home.js"
-            grep -q "quote-card--link" "${{ env.NGINX_STATIC_DIR }}/js/home.js"
+            test -f "${{ env.NGINX_STATIC_DIR }}/js/overview.js"
+            grep -q "quote-card--link" "${{ env.NGINX_STATIC_DIR }}/js/overview.js"
+            ! grep -q "region__enter" "${{ env.NGINX_STATIC_DIR }}/js/overview.js"
             test -f "${{ env.NGINX_STATIC_DIR }}/market/detail.html"
 
             "${{ env.NGINX_BIN }}" -t

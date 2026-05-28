@@ -171,18 +171,6 @@ body.market-page {
 .quote-card--link .quote-card__change.down { color: #ea3943; }
 .quote-card--link .quote-card__change.flat { color: #94a3b8; }
 
-.quote-card__hint {
-  margin-top: 0.65rem;
-  padding-top: 0.55rem;
-  border-top: 1px solid rgba(148, 163, 184, 0.1);
-  font-size: 0.75rem;
-  color: #64748b;
-}
-
-.quote-card--link:hover .quote-card__hint {
-  color: #94a3b8;
-}
-
 @media (max-width: 600px) {
   .market-stats { grid-template-columns: 1fr; }
 }

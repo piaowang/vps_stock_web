@@ -73,7 +73,7 @@ jobs:
             cp -r frontend/* "${{ env.NGINX_STATIC_DIR }}"/
 
             test -f "${{ env.NGINX_STATIC_DIR }}/js/home.js"
-            grep -q "detail.html" "${{ env.NGINX_STATIC_DIR }}/js/home.js"
+            grep -q "quote-card__hint" "${{ env.NGINX_STATIC_DIR }}/js/home.js"
             test -f "${{ env.NGINX_STATIC_DIR }}/market/detail.html"
 
             "${{ env.NGINX_BIN }}" -t

@@ -41,11 +41,12 @@ async function loadItemQuote(item) {
 function card(item, q, regionId) {
   const cls = q ? tone(q.changePct) : 'flat';
   const href = `/market/detail.html?id=${regionId}`;
-  return `<a href="${href}" class="quote-card quote-card--link quote-card--${cls}">
+  return `<a href="${href}" class="quote-card quote-card--link quote-card--${cls}" aria-label="${item.label} 5 年回顾">
     <div class="quote-card__code">${item.symbol.replace('^', '')}</div>
-    <h3 class="quote-card__name">${item.label}</h3>
+    <div class="quote-card__name">${item.label}</div>
     <div class="quote-card__price">${q ? fmt(q.price) : '--'}</div>
     <div class="quote-card__change ${cls}">${q ? pct(q.changePct) : '--'}</div>
+    <div class="quote-card__hint">5 年走势 →</div>
   </a>`;
 }
 

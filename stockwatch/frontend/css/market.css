@@ -140,37 +140,6 @@ body.market-page {
   color: #fecaca;
 }
 
-.market-quick {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-}
-
-.market-quick__item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.85rem 1rem;
-  border-radius: 12px;
-  background: rgba(30, 41, 59, 0.85);
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  color: #e2e8f0;
-  text-decoration: none;
-  font-size: 0.92rem;
-  transition: border-color 0.15s ease, transform 0.15s ease;
-}
-
-.market-quick__item:hover {
-  border-color: rgba(56, 189, 248, 0.35);
-  transform: translateY(-1px);
-}
-
-.market-quick__item span {
-  color: #64748b;
-  font-size: 0.78rem;
-}
-
 .region__link {
   display: flex;
   align-items: center;
@@ -180,7 +149,7 @@ body.market-page {
 }
 
 .region__link:hover .region__title {
-  color: #38bdf8;
+  color: #e2e8f0;
 }
 
 .region__enter {
@@ -190,20 +159,54 @@ body.market-page {
 }
 
 .region__head:hover .region__enter {
-  color: #38bdf8;
+  color: #94a3b8;
 }
 
-.quote-card--link {
+.quote-card--link,
+.quote-card--link:visited,
+.quote-card--link:hover,
+.quote-card--link:active,
+.quote-card--link:focus {
   display: block;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  outline: none;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .quote-card--link:hover {
   transform: translateY(-2px);
-  border-color: rgba(56, 189, 248, 0.35);
+  border-color: rgba(148, 163, 184, 0.28);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.quote-card--link:focus-visible {
+  box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.35);
+}
+
+.quote-card--link .quote-card__price {
+  color: #f8fafc;
+}
+
+.quote-card--link .quote-card__name {
+  color: #cbd5e1;
+}
+
+.quote-card--link .quote-card__change.up { color: #16c784; }
+.quote-card--link .quote-card__change.down { color: #ea3943; }
+.quote-card--link .quote-card__change.flat { color: #94a3b8; }
+
+.quote-card__hint {
+  margin-top: 0.65rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.quote-card--link:hover .quote-card__hint {
+  color: #94a3b8;
 }
 
 @media (max-width: 600px) {

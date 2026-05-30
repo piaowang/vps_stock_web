@@ -16,7 +16,24 @@
     .up { color: #16c784; } .down { color: #ea3943; } .flat { color: #94a3b8; }
     .muted { color: #94a3b8; font-size: 0.9rem; margin-bottom: 0.8rem; }
     .chips { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.7rem 0 1rem; }
-    .chip { background: #1e293b; border: 1px solid #334155; border-radius: 999px; padding: 0.3rem 0.7rem; font-size: 0.82rem; color: #cbd5e1; }
+    .chip {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 999px;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+    }
+    .chip:hover { border-color: #64748b; background: #243044; }
+    .chip--active {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      color: #e2e8f0;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -39,6 +56,6 @@
       </tbody>
     </table>
   </div>
-  <script src="/stocks/stocks.js"></script>
+  <script src="/stocks/stocks.js?v=2"></script>
 </body>
 </html>

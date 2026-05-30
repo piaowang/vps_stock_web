@@ -10,6 +10,11 @@ const WATCHLIST = [
   { symbol: 'DIA', name: 'SPDR Dow Jones ETF', note: '道琼斯 ETF', tag: '高流动性 ETF' },
 ];
 
+const TAGS = ['全部', ...new Set(WATCHLIST.map((item) => item.tag))];
+
+let activeTag = '全部';
+let quoteMap = {};
+
 const fmt = (n) => Number(n || 0).toLocaleString('en-US', {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
@@ -26,16 +31,31 @@ async function loadQuotes() {
   return Object.fromEntries(json.data.map((q) => [q.symbol, q]));
 }
 
-function renderChips() {
-  const tags = [...new Set(WATCHLIST.map((item) => item.tag))];
-  document.getElementById('stockChips').innerHTML = tags
-    .map((tag) => `<span class="chip">${tag}</span>`)
-    .join('');
+function filteredList() {
+  if (activeTag === '全部') return WATCHLIST;
+  return WATCHLIST.filter((item) => item.tag === activeTag);
 }
 
-function renderTable(map) {
-  const rows = WATCHLIST.map((item) => {
-    const q = map[item.symbol];
+function renderChips() {
+  const root = document.getElementById('stockChips');
+  root.innerHTML = TAGS.map((tag) => {
+    const cls = tag === activeTag ? 'chip chip--active' : 'chip';
+    return `<button type="button" class="${cls}" data-tag="${tag}">${tag}</button>`;
+  }).join('');
+
+  root.querySelectorAll('.chip').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      activeTag = btn.dataset.tag;
+      renderChips();
+      renderTable();
+    });
+  });
+}
+
+function renderTable() {
+  const list = filteredList();
+  const rows = list.map((item) => {
+    const q = quoteMap[item.symbol];
     if (!q) {
       return `<tr><td>${item.symbol}</td><td>${item.name}</td><td colspan="4" class="muted">暂无数据</td></tr>`;
     }
@@ -49,15 +69,22 @@ function renderTable(map) {
       <td>${item.note}</td>
     </tr>`;
   });
-  document.getElementById('stockBody').innerHTML = rows.join('');
+
+  const body = document.getElementById('stockBody');
+  body.innerHTML = rows.length
+    ? rows.join('')
+    : '<tr><td colspan="6" class="muted">该分类暂无标的</td></tr>';
+
+  const sample = list.find((item) => quoteMap[item.symbol]) || WATCHLIST[0];
+  const label = activeTag === '全部' ? '全部自选股' : activeTag;
   document.getElementById('stockUpdated').textContent =
-    `自选股 + 盘中真实行情 · 更新时间：${timeText(map[WATCHLIST[0].symbol]?.updatedAt)}`;
+    `${label} · 盘中真实行情 · 更新时间：${timeText(quoteMap[sample?.symbol]?.updatedAt)}`;
 }
 
 async function init() {
+  quoteMap = await loadQuotes();
   renderChips();
-  const map = await loadQuotes();
-  renderTable(map);
+  renderTable();
 }
 
 init().catch((err) => {

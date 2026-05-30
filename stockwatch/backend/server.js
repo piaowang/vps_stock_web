@@ -7,6 +7,7 @@ const { fetchQuoteFromYahoo, fetchHistoryFromYahoo } = require('./src/yahoo-prov
 const { createWsHub } = require('./src/ws-hub');
 const { SUPPORTED_SYMBOLS, assertSymbol } = require('./src/symbols');
 const { assertHistorySymbol, getMarket, MARKETS } = require('./src/markets');
+const { getEtfGroups } = require('./src/etfs');
 
 const PORT = Number(process.env.AGG_PORT || 8090);
 const POLL_MS = 5000;
@@ -77,6 +78,39 @@ app.get('/api/quotes', async (req, res, next) => {
     res.json({
       ok: errors.length === 0,
       data: quotes,
+      errors,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/etfs', async (req, res, next) => {
+  try {
+    const groups = getEtfGroups();
+    const symbols = groups.flatMap((group) => group.items.map((item) => item.symbol));
+    const results = await Promise.allSettled(
+      symbols.map((symbol) => quoteService.getQuote(symbol, { force: false }))
+    );
+    const quoteMap = {};
+    const errors = [];
+    results.forEach((result, idx) => {
+      const symbol = symbols[idx];
+      if (result.status === 'fulfilled') {
+        quoteMap[symbol] = result.value;
+      } else {
+        errors.push({ symbol, error: String(result.reason?.message || result.reason) });
+      }
+    });
+    res.json({
+      ok: errors.length === 0,
+      data: groups.map((group) => ({
+        ...group,
+        items: group.items.map((item) => ({
+          ...item,
+          quote: quoteMap[item.symbol] || null,
+        })),
+      })),
       errors,
     });
   } catch (err) {

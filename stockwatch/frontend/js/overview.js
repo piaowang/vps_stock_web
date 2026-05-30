@@ -62,6 +62,43 @@ function renderRegions(map) {
     </section>`).join('');
 }
 
+function etfCard(item) {
+  const q = item.quote;
+  const cls = q ? tone(q.changePct) : 'flat';
+  return `<article class="etf-card etf-card--${cls}">
+    <div class="etf-card__top">
+      <span class="etf-card__code">${item.code}</span>
+      <span class="etf-card__market">${item.market}</span>
+    </div>
+    <h3 class="etf-card__name">${item.name}</h3>
+    <div class="etf-card__track">跟踪 ${item.track}</div>
+    <div class="etf-card__price">${q ? fmt(q.price) : '--'}</div>
+    <div class="etf-card__change ${cls}">${q ? pct(q.changePct) : '--'}</div>
+  </article>`;
+}
+
+function renderEtfs(groups) {
+  const root = $('etfSection');
+  if (!root || !groups?.length) return;
+  root.innerHTML = groups.map((group) => `
+    <section class="etf-group">
+      <div class="region__head">
+        <span class="region__flag etf-flag">ETF</span>
+        <h2 class="region__title">${group.title}</h2>
+      </div>
+      <p class="etf-group__note">${group.note}</p>
+      <div class="etf-grid">${group.items.map(etfCard).join('')}</div>
+    </section>`).join('');
+}
+
+async function loadEtfs() {
+  const res = await fetch('/api/etfs');
+  if (!res.ok) throw new Error(`ETF HTTP ${res.status}`);
+  const json = await res.json();
+  if (!json?.data?.length) throw new Error('ETF empty');
+  renderEtfs(json.data);
+}
+
 function renderStats(quotes) {
   const up = quotes.filter((q) => q.changePct > 0.001).length;
   const down = quotes.filter((q) => q.changePct < -0.001).length;
@@ -115,5 +152,15 @@ async function loadMarket() {
   setText('marketLive', '实时行情');
 }
 
-loadMarket().catch((err) => showError(err.message));
-setInterval(() => loadMarket().catch((err) => showError(err.message)), REFRESH_MS);
+async function init() {
+  const [marketResult] = await Promise.allSettled([loadMarket(), loadEtfs()]);
+  if (marketResult.status === 'rejected') {
+    showError(marketResult.reason?.message || '行情加载失败');
+  }
+}
+
+init();
+setInterval(() => {
+  loadMarket().catch((err) => showError(err.message));
+  loadEtfs().catch(() => {});
+}, REFRESH_MS);

@@ -1,3 +1,5 @@
+const { ETF_SYMBOLS } = require('./etfs');
+
 const SUPPORTED_SYMBOLS = [
   'AAPL',
   'TSLA',
@@ -16,6 +18,7 @@ const SUPPORTED_SYMBOLS = [
   '^HSI',
   '^N225',
   '^KS11',
+  ...ETF_SYMBOLS.filter((symbol) => !['SPY', 'QQQ'].includes(symbol)),
 ];
 
 const SYMBOL_ALIASES = {
